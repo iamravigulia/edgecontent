@@ -66,7 +66,9 @@
                             $mychapter = DB::table('edw_chapter')->where('id', $myrel->chapter_id)->first();
                             @endphp
                             <select name="pb_chapter_id" class="w-full text-sm text-gray-600 py-2 px-1 border border-gray-600 rounded-lg" required>
+                                @if($mychapter)
                                 <option selected value="{{$mychapter->id}}">{{$mychapter->chapt_name}}</option>
+                                @endif
                                 @foreach ($chapters_x as $chapterxx)
                                     @if(!in_array($chapterxx->id, $relationz))
                                     <option value="{{$chapterxx->id}}">{{$chapterxx->chapt_name}}</option>
