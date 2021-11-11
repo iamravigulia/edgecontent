@@ -88,7 +88,11 @@
         <td></td>
         <td>{{$que->id}}</td>
         <td>
-            @php $fm = DB::table('format_types')->where('id', $que->format_type_id)->first() @endphp
+            @php 
+            $fm = DB::table('format_types')
+            ->where('id', $que->format_type_id)
+            ->select('id', 'name', 'slug', 'question_table_name', 'answer_table_name')
+            ->first() @endphp
             <div class="w-full">
                 <div style="margin:2px; display:inline-block; font-size:12px; padding:2px 4px; background:#707070; border-radius:4px; color:#fff">{{$fm->name}}</div>
                 @php $question = DB::table($fm->question_table_name)->where('id', $que->question_id)->first(); @endphp
@@ -96,7 +100,7 @@
                 {{$que->question_id}} --}}
                 @if($question)
                 @if (isset($question->media_id))
-                    @php $media = DB::table('media')->where('id', $question->media_id)->first(); @endphp
+                    @php $media = DB::table('media')->where('id', $question->media_id)->select('id', 'url')->first(); @endphp
                     @if (strpos($media->url, '.mp3'))
                         <b>Question as Audio:</b>
                         <div>{{$question->question ?? $question->question_title ?? ' '}}</div>
@@ -108,8 +112,8 @@
                     @endif
                 @elseif($fm->question_table_name == 'fmt_mc2pq_ques')
                 <div class="block"><b>Question:</b> {{$question->question ?? $question->question_title ?? 'n/a'}}</div>
-                    @php $media1 = DB::table('media')->where('id', $question->media1_id)->first(); @endphp
-                    @php $media2 = DB::table('media')->where('id', $question->media2_id)->first(); @endphp
+                    @php $media1 = DB::table('media')->where('id', $question->media1_id)->select('id', 'url')->first(); @endphp
+                    @php $media2 = DB::table('media')->where('id', $question->media2_id)->select('id', 'url')->first(); @endphp
                     @if($media1)
                         <img style="width:50px; height:auto;" src="{{url('/')}}/storage/{{$media1->url}}" alt="">
                     @endif
@@ -129,11 +133,11 @@
                 @php $baseUrl    = app('url')->asset('storage/'); @endphp
                     <div><b>Letter: </b>{{$question->letter}}</div>
                     @isset($question->letter_image_media_id)
-                        @php $l_i_m = DB::table('media')->where('id', $question->letter_image_media_id)->first(); @endphp
+                        @php $l_i_m = DB::table('media')->where('id', $question->letter_image_media_id)->select('id', 'url')->first(); @endphp
                     <div><img style="width:50px;" src="{{$baseUrl}}/{{$l_i_m->url}}" alt=""></div>
                     @endisset
                     @isset($question->letter_audio_media_id)
-                        @php $l_i_a = DB::table('media')->where('id', $question->letter_audio_media_id)->first(); @endphp
+                        @php $l_i_a = DB::table('media')->where('id', $question->letter_audio_media_id)->select('id', 'url')->first(); @endphp
                         <div><audio src="{{$baseUrl}}/{{$l_i_a->url}}" controls>
                             Your browser does not support the audio element.
                             </audio>
@@ -148,11 +152,11 @@
                     </div> --}}
 
                     @isset($question->word_image_media_id)
-                        @php $w_i_m = DB::table('media')->where('id', $question->word_image_media_id)->first(); @endphp
+                        @php $w_i_m = DB::table('media')->where('id', $question->word_image_media_id)->select('id', 'url')->first(); @endphp
                     <div><img style="width:50px;" src="{{$baseUrl}}/{{$w_i_m->url}}" alt=""></div>
                     @endisset
                     @isset($question->word_audio_media_id)
-                        @php $w_i_a = DB::table('media')->where('id', $question->word_audio_media_id)->first(); @endphp
+                        @php $w_i_a = DB::table('media')->where('id', $question->word_audio_media_id)->select('id', 'url')->first(); @endphp
                         <div><audio src="{{$baseUrl}}/{{$w_i_a->url}}" controls>
                             Your browser does not support the audio element.
                             </audio>
@@ -166,11 +170,11 @@
                 @php $baseUrl    = app('url')->asset('storage/'); @endphp
                     <div><b>word: </b>{{$question->word}}</div>
                     @isset($question->word_image_media_id)
-                        @php $l_i_m = DB::table('media')->where('id', $question->word_image_media_id)->first(); @endphp
+                        @php $l_i_m = DB::table('media')->where('id', $question->word_image_media_id)->select('id', 'url')->first(); @endphp
                     <div><img style="width:50px;" src="{{$baseUrl}}/{{$l_i_m->url}}" alt=""></div>
                     @endisset
                     @isset($question->word_audio_media_id)
-                        @php $l_i_a = DB::table('media')->where('id', $question->word_audio_media_id)->first(); @endphp
+                        @php $l_i_a = DB::table('media')->where('id', $question->word_audio_media_id)->select('id', 'url')->first(); @endphp
                         <div><audio src="{{$baseUrl}}/{{$l_i_a->url}}" controls>
                             Your browser does not support the audio element.
                             </audio>
@@ -190,7 +194,7 @@
                     <div style="margin:10px;">
                         <div><b>sentence:           </b>{{$question->sentence}}</div>
                         @isset($question->sentence_audio_media_id)
-                            @php $s__i_a = DB::table('media')->where('id', $question->sentence_audio_media_id)->first(); @endphp
+                            @php $s__i_a = DB::table('media')->where('id', $question->sentence_audio_media_id)->select('id', 'url')->first(); @endphp
                             <div><audio src="{{$baseUrl}}/{{$s__i_a->url}}" controls>
                                 Your browser does not support the audio element.
                                 </audio>
@@ -264,7 +268,7 @@
                 <table style="width: 100%;">
                     @foreach ($fmt_mtpp_pic as $ans)
                     @if($ans->media_id)
-                    @php $media = DB::table('media')->where('id', $ans->media_id)->select('url')->first(); @endphp
+                    @php $media = DB::table('media')->where('id', $ans->media_id)->select('id','url')->first(); @endphp
                     @php $text = DB::table('fmt_mtpp_text')->where('pic_id', $ans->id)->select('text')->first(); @endphp
                     <tr>
                         <td>
@@ -281,7 +285,7 @@
                     <li style="display: flex; margin:5px 0; @if($answer->arrange == 1) border-left:4px solid blue; @endif">
                         <span @if($answer->arrange == 1) style="color:blue;" @endif>{{$answer->answer}}</span>
                         <div>
-                            @php $image = DB::table('media')->where('id', $answer->media_id)->first(); @endphp
+                            @php $image = DB::table('media')->where('id', $answer->media_id)->select('id', 'url')->first(); @endphp
                             @if($image)
                             <img src="{{url('/')}}/storage/{{$image->url}}" style="width:40px; height:30px; margin-left:10px; object-fit:cover;"></li>
                             @endif
@@ -294,7 +298,7 @@
                     <li style="display: flex; margin:5px 0; @if($answer->arrange == 1) border-left:4px solid blue; @endif">
                         <span @if($answer->arrange == 1) style="color:blue;" @endif>{{$answer->answer}}</span>
                         <div>
-                            @php $audio = DB::table('media')->where('id', $answer->media_id)->first(); @endphp
+                            @php $audio = DB::table('media')->where('id', $answer->media_id)->select('id', 'url')->first(); @endphp
                             @if($audio)
                             <audio controls="controls" src="{{url('/')}}/storage/{{$audio->url}}"></audio>
                             @endif
@@ -307,7 +311,7 @@
                     <li style="display: flex; margin:5px 0; @if($answer->arrange == 1) border-left:4px solid blue; @endif">
                         <span @if($answer->arrange == 1) style="color:blue;" @endif>{{$answer->answer}}</span>
                         <div>
-                            @php $img = DB::table('media')->where('id', $answer->media_id)->first() @endphp
+                            @php $img = DB::table('media')->where('id', $answer->media_id)->select('id', 'url')->first() @endphp
                             @if($img)
                             <img style="width:20px; width:20px;" src="{{url('/')}}/storage/{{$img->url}}" alt="">
                             @endif
