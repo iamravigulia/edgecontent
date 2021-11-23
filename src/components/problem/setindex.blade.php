@@ -462,7 +462,7 @@
         @elseif($fm->question_table_name === 'fmt_mcqp_ques')
             <x-mcqp.edit :message="$que->question_id"/>
         @elseif($fm->question_table_name === 'fmt_fillmcq_ques')
-            <x-Fillmcq.edit :message="$que->question_id"/>
+            <x-fillmcq.edit :message="$que->question_id"/>
         @elseif($fm->question_table_name === 'fmt_mcaq_ques')
             <x-mcaq.edit :message="$que->question_id"/>
         @elseif($fm->question_table_name === 'fmt_mc2pq_ques')

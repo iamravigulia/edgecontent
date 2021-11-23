@@ -158,7 +158,7 @@
         @php $formatGot = DB::table('format_types')->where('question_table_name', 'fmt_fillmcq_ques')->first(); @endphp
         @if ($formatGot)
         <div id="fmt_fillmcq_ques" hidden>
-            <x-Fillmcq.open :pbs72="$problemset->id" :fmt72="$formatGot->id" />
+            <x-fillmcq.open :pbs72="$problemset->id" :fmt72="$formatGot->id" />
         </div>
         @endif
         @elseif ($key->tb_name == 'fmt_mcqp_ques')
