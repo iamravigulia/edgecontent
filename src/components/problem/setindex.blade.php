@@ -236,7 +236,7 @@
                     @foreach ($answers as $answer){{$answer->answer}}@endforeach
                 </div>
                 @endif
-            @elseif($fm->answer_table_name == 'fmt_mcq_ans' || $fm->answer_table_name == 'fmt_mcqt_ans' || $fm->answer_table_name == 'fmt_mcqpc_ans' || $fm->answer_table_name == 'fmt_fillup_ans' || $fm->answer_table_name == 'fmt_mcqp_ans' || $fm->answer_table_name == 'fmt_mcaq_ans' || $fm->answer_table_name == 'fmt_mc2pq_ans' || $fm->answer_table_name == 'fmt_tnf_ans' || $fm->answer_table_name == 'fmt_dad_ans' || $fm->answer_table_name == 'fmt_cma_ans' || $fm->answer_table_name == 'fmt_gridtnf_ans')
+            @elseif($fm->answer_table_name == 'fmt_mcq_ans' || $fm->answer_table_name == 'fmt_fillmcq_ans' || $fm->answer_table_name == 'fmt_mcqt_ans' || $fm->answer_table_name == 'fmt_mcqpc_ans' || $fm->answer_table_name == 'fmt_fillup_ans' || $fm->answer_table_name == 'fmt_mcqp_ans' || $fm->answer_table_name == 'fmt_mcaq_ans' || $fm->answer_table_name == 'fmt_mc2pq_ans' || $fm->answer_table_name == 'fmt_tnf_ans' || $fm->answer_table_name == 'fmt_dad_ans' || $fm->answer_table_name == 'fmt_cma_ans' || $fm->answer_table_name == 'fmt_gridtnf_ans')
                 @php $answers = DB::table($fm->answer_table_name)->where('question_id', $que->question_id)->get(); @endphp
                 @foreach ($answers as $answer)
                     <li @if($answer->arrange == 1) style="color:blue;" @endif >{{$answer->answer ?? 'n/a'}}</li>
@@ -339,6 +339,9 @@
                 {{-- <a class="fmt_fpm_delete" href="{{route('fmt.mcq.inactive', $que->question_id)}}">Delete</a> --}}
             @elseif($fm->question_table_name == 'fmt_mcqp_ques')
                 <a class="fmt_fpm_edit" href="javascript:void(0);" onclick="modalMCQP({{$que->question_id}})">Edit</a>
+                {{-- <a class="fmt_fpm_delete" href="{{route('fmt.mcqpc.inactive', $que->question_id)}}">Delete</a> --}}
+            @elseif($fm->question_table_name == 'fmt_fillmcq_ques')
+                <a class="fmt_fpm_edit" href="javascript:void(0);" onclick="modalFILLMCQ({{$que->question_id}})">Edit</a>
                 {{-- <a class="fmt_fpm_delete" href="{{route('fmt.mcqpc.inactive', $que->question_id)}}">Delete</a> --}}
             @elseif($fm->question_table_name == 'fmt_mcaq_ques')
                 <a class="fmt_fpm_edit" href="javascript:void(0);" onclick="modalMCAQ({{$que->question_id}})">Edit</a>
@@ -458,6 +461,8 @@
             <x-mcq.edit :message="$que->question_id"/>
         @elseif($fm->question_table_name === 'fmt_mcqp_ques')
             <x-mcqp.edit :message="$que->question_id"/>
+        @elseif($fm->question_table_name === 'fmt_fillmcq_ques')
+            <x-Fillmcq.edit :message="$que->question_id"/>
         @elseif($fm->question_table_name === 'fmt_mcaq_ques')
             <x-mcaq.edit :message="$que->question_id"/>
         @elseif($fm->question_table_name === 'fmt_mc2pq_ques')
@@ -670,6 +675,14 @@ function modalFILL($id){
 }
 function closeModalFILL($id){
     var modal = document.getElementById('modalFILL'+$id);
+    modal.classList.add("hidden");
+}
+function modalFILLMCQ($id){
+    var modal = document.getElementById('modalFILLMCQ'+$id);
+    modal.classList.remove("hidden");
+}
+function closeModalFILLMCQ($id){
+    var modal = document.getElementById('modalFILLMCQ'+$id);
     modal.classList.add("hidden");
 }
 function modalUNW($id){
