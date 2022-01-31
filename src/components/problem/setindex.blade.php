@@ -102,9 +102,18 @@
                 @if (isset($question->media_id))
                     @php $media = DB::table('media')->where('id', $question->media_id)->select('id', 'url')->first(); @endphp
                     @if (strpos($media->url, '.mp3'))
-                        <b>Question as Audio:</b>
+                        <b>Question as English Audio:</b>
                         <div>{{$question->question ?? $question->question_title ?? ' '}}</div>
                         <audio controls="controls" src="{{url('/')}}/storage/{{$media->url}}"></audio>
+                        {{-- spanish --}}
+                        @if (isset($question->media_id_es))
+                            @php $media_es = DB::table('media')->where('id', $question->media_id_es)->select('id', 'url')->first(); @endphp
+                            @if (strpos($media_es->url, '.mp3'))
+                            <b>Question as Spanish Audio:</b>
+                            <audio controls="controls" src="{{url('/')}}/storage/{{$media_es->url}}"></audio>
+                            @endif
+                        @endif
+                        {{-- end pf spanish --}}
                     @else
                         <b>Question as Image:</b>
                         <div>{{$question->question ?? $question->question_title ?? ' '}}</div>
