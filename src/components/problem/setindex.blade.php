@@ -113,7 +113,7 @@
                             <audio controls="controls" src="{{url('/')}}/storage/{{$media_es->url}}"></audio>
                             @endif
                         @endif
-                        {{-- end pf spanish --}}
+                        {{-- end of spanish --}}
                     @else
                         <b>Question as Image:</b>
                         <div>{{$question->question ?? $question->question_title ?? ' '}}</div>
@@ -304,12 +304,18 @@
             @elseif($fm->answer_table_name == 'fmt_mcqa_ans')
                 @php $answers = DB::table($fm->answer_table_name)->where('question_id', $que->question_id)->get(); @endphp
                 @foreach ($answers as $answer)
-                    <li style="display: flex; margin:5px 0; @if($answer->arrange == 1) border-left:4px solid blue; @endif">
+                    <li style="margin:10px 0; border:1px solid #000; padding: 10px 4px; @if($answer->arrange == 1) border-left:4px solid blue; @endif">
                         <span @if($answer->arrange == 1) style="color:blue;" @endif>{{$answer->answer}}</span>
-                        <div>
+                        <div style="">
                             @php $audio = DB::table('media')->where('id', $answer->media_id)->select('id', 'url')->first(); @endphp
+                            @php $audio_es = DB::table('media')->where('id', $answer->media_id_es)->select('id', 'url')->first(); @endphp
                             @if($audio)
+                            <small>English Audio</small>
                             <audio controls="controls" src="{{url('/')}}/storage/{{$audio->url}}"></audio>
+                            @endif
+                            @if($audio_es)
+                            <small>Spanish Audio</small>
+                            <audio controls="controls" src="{{url('/')}}/storage/{{$audio_es->url}}"></audio>
                             @endif
                         </div>
                     </li>
