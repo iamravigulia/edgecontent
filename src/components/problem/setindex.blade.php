@@ -119,7 +119,7 @@
                         <div>{{$question->question ?? $question->question_title ?? ' '}}</div>
                         <img style="width:50px; height:auto;" src="{{url('/')}}/storage/{{$media->url}}" alt="">
                     @endif
-                @elseif($fm->question_table_name == 'fmt_mc2pq_ques')
+                @elseif($fm->question_table_name == 'fmt_mc2pq_ques' || $fm->question_table_name == 'fmt_mc4pq_ques')
                 <div class="block"><b>Question:</b> {{$question->question ?? $question->question_title ?? 'n/a'}}</div>
                     @php $media1 = DB::table('media')->where('id', $question->media1_id)->select('id', 'url')->first(); @endphp
                     @php $media2 = DB::table('media')->where('id', $question->media2_id)->select('id', 'url')->first(); @endphp
@@ -128,6 +128,16 @@
                     @endif
                     @if($media2)
                         <img style="width:50px; height:auto;" src="{{url('/')}}/storage/{{$media2->url}}" alt="">
+                    @endif
+                    @if ($fm->question_table_name == 'fmt_mc4pq_ques')
+                        @php $media3 = DB::table('media')->where('id', $question->media3_id)->select('id', 'url')->first(); @endphp
+                        @php $media4 = DB::table('media')->where('id', $question->media4_id)->select('id', 'url')->first(); @endphp
+                        @if($media3)
+                            <img style="width:50px; height:auto;" src="{{url('/')}}/storage/{{$media3->url}}" alt="">
+                        @endif
+                        @if($media4)
+                            <img style="width:50px; height:auto;" src="{{url('/')}}/storage/{{$media4->url}}" alt="">
+                        @endif
                     @endif
                 @elseif($fm->question_table_name == 'fmt_map_ques' || $fm->question_table_name == 'fmt_rew_ques')
                 @php $arr_q = explode (",", $question->question); @endphp
@@ -245,7 +255,7 @@
                     @foreach ($answers as $answer){{$answer->answer}}@endforeach
                 </div>
                 @endif
-            @elseif($fm->answer_table_name == 'fmt_mcq_ans' || $fm->answer_table_name == 'fmt_fillmcq_ans' || $fm->answer_table_name == 'fmt_mcqt_ans' || $fm->answer_table_name == 'fmt_mcqpc_ans' || $fm->answer_table_name == 'fmt_fillup_ans' || $fm->answer_table_name == 'fmt_mcqp_ans' || $fm->answer_table_name == 'fmt_mcaq_ans' || $fm->answer_table_name == 'fmt_mc2pq_ans' || $fm->answer_table_name == 'fmt_tnf_ans' || $fm->answer_table_name == 'fmt_dad_ans' || $fm->answer_table_name == 'fmt_cma_ans' || $fm->answer_table_name == 'fmt_gridtnf_ans')
+            @elseif($fm->answer_table_name == 'fmt_mcq_ans' || $fm->answer_table_name == 'fmt_fillmcq_ans' || $fm->answer_table_name == 'fmt_mcqt_ans' || $fm->answer_table_name == 'fmt_mcqpc_ans' || $fm->answer_table_name == 'fmt_fillup_ans' || $fm->answer_table_name == 'fmt_mcqp_ans' || $fm->answer_table_name == 'fmt_mcaq_ans' || $fm->answer_table_name == 'fmt_mc2pq_ans' || $fm->answer_table_name == 'fmt_mc4pq_ans' || $fm->answer_table_name == 'fmt_tnf_ans' || $fm->answer_table_name == 'fmt_dad_ans' || $fm->answer_table_name == 'fmt_cma_ans' || $fm->answer_table_name == 'fmt_gridtnf_ans')
                 @php $answers = DB::table($fm->answer_table_name)->where('question_id', $que->question_id)->get(); @endphp
                 @foreach ($answers as $answer)
                     <li @if($answer->arrange == 1) style="color:blue;" @endif >{{$answer->answer ?? 'n/a'}}</li>
@@ -482,6 +492,8 @@
             <x-mcaq.edit :message="$que->question_id"/>
         @elseif($fm->question_table_name === 'fmt_mc2pq_ques')
             <x-mc2pq.edit :message="$que->question_id"/>
+        @elseif($fm->question_table_name === 'fmt_mc4pq_ques')
+            <x-mc4pq.edit :message="$que->question_id"/>
         @elseif($fm->question_table_name === 'fmt_mcqpc_ques')
             {{-- <x-mcqpc.edit :message="$que->question_id"/> --}}
         @elseif($fm->question_table_name === 'fmt_mcqpa2_ques')
