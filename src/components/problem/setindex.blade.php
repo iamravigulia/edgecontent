@@ -124,18 +124,30 @@
                     @php $media1 = DB::table('media')->where('id', $question->media1_id)->select('id', 'url')->first(); @endphp
                     @php $media2 = DB::table('media')->where('id', $question->media2_id)->select('id', 'url')->first(); @endphp
                     @if($media1)
+                        @if ($fm->question_table_name == 'fmt_mc4pq_ques')
+                            <b>media title1:</b>{{$fm->media_title1}} <br>
+                        @endif
                         <img style="width:50px; height:auto;" src="{{url('/')}}/storage/{{$media1->url}}" alt="">
                     @endif
                     @if($media2)
+                        @if ($fm->question_table_name == 'fmt_mc4pq_ques')
+                            <b>media title2:</b>{{$fm->media_title2}} <br>
+                        @endif
                         <img style="width:50px; height:auto;" src="{{url('/')}}/storage/{{$media2->url}}" alt="">
                     @endif
                     @if ($fm->question_table_name == 'fmt_mc4pq_ques')
                         @php $media3 = DB::table('media')->where('id', $question->media3_id)->select('id', 'url')->first(); @endphp
                         @php $media4 = DB::table('media')->where('id', $question->media4_id)->select('id', 'url')->first(); @endphp
                         @if($media3)
+                            @if ($fm->question_table_name == 'fmt_mc4pq_ques')
+                                <b>media title3:</b>{{$fm->media_title3}} <br>
+                            @endif
                             <img style="width:50px; height:auto;" src="{{url('/')}}/storage/{{$media3->url}}" alt="">
                         @endif
                         @if($media4)
+                            @if ($fm->question_table_name == 'fmt_mc4pq_ques')
+                                <b>media title4:</b>{{$fm->media_title4}} <br>
+                            @endif
                             <img style="width:50px; height:auto;" src="{{url('/')}}/storage/{{$media4->url}}" alt="">
                         @endif
                     @endif
