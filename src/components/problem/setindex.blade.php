@@ -269,7 +269,7 @@
                         {{$answer->answer}}
                     @endforeach
                 </div>
-                @elseif($fm->answer_table_name == 'fmt_unjumble_words_ans' || $fm->answer_table_name == 'fmt_mtw_ans')
+                @elseif($fm->answer_table_name == 'fmt_unjumble_words_ans')
                 <div style="color:rgb(0, 149, 182);">
                     <b>Answer: </b>
                     @foreach ($answers as $answer){{$answer->answer}}@endforeach
