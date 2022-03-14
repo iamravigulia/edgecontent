@@ -300,7 +300,14 @@
                 <x-mc4pq.open :pbs72="$problemset->id" :fmt72="$formatGot->id" />
             </div>
             @endif
-        @endif        
+        @endif
+        @php $formatGot = DB::table('format_types')->where('question_table_name', 'fmt_mtw_ques')->first(); @endphp
+            @if ($formatGot)
+            <div id="fmt_mtw_ques" hidden>
+                <x-mtw.open :pbs72="$problemset->id" :fmt72="$formatGot->id" />
+            </div>
+            @endif
+        @endif
         @endforeach
     </div>
     {{-- <button class="my-2 py-1 px-2 bg-blue-600 text-white rounded-lg" type="submit">Submit</button> --}}
