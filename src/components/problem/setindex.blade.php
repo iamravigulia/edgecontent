@@ -257,7 +257,7 @@
             </div>
         </td>
         <td>
-            @if($fm->answer_table_name == 'fmt_unjumble_words_ans' || $fm->answer_table_name == 'fmt_mof_ans' || $fm->answer_table_name == 'fmt_mawr_ans' || $fm->answer_table_name == 'fmt_lamas_ans' || $fm->answer_table_name == 'fmt_lamaw_ans')
+            @if($fm->answer_table_name == 'fmt_unjumble_words_ans' || $fm->answer_table_name == 'fmt_mof_ans' || $fm->answer_table_name == 'fmt_mawr_ans' || $fm->answer_table_name == 'fmt_lamas_ans' || $fm->answer_table_name == 'fmt_lamaw_ans' || $fm->answer_table_name == 'fmt_mtw_ans')
                 @php $answers = DB::table($fm->answer_table_name)->where('question_id', $que->question_id)->orderBy('arrange')->get(); @endphp
                 @foreach ($answers as $answer)
                     <li>{{$answer->answer ?? 'n/a'}}</li>
