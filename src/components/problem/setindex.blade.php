@@ -160,6 +160,14 @@
                     {{$aq}}
                     @endif
                 @endforeach
+                @elseif($fm->question_table_name == 'fmt_mtw_ques')
+                    <div class="block"><b>Question:</b> {{$question->question ?? $question->format_title ?? 'n/a'}}</div>
+                    <div class="block"><b>Word1:</b> {{$question->word1 ?? 'n/a'}}</div>
+                    <div class="block"><b>word2:</b> {{$question->word2 ?? 'n/a'}}</div>
+                    <div class="block"><b>word3:</b> {{$question->word3 ?? 'n/a'}}</div>
+                    <div class="block"><b>word4:</b> {{$question->word4 ?? 'n/a'}}</div>
+                    <div class="block"><b>word5:</b> {{$question->word5 ?? 'n/a'}}</div>
+                    <div class="block"><b>word6:</b> {{$question->word6 ?? 'n/a'}}</div>
                 @elseif($fm->question_table_name == 'fmt_ltl_ques')
                 @php $baseUrl    = app('url')->asset('storage/'); @endphp
                     <div><b>Letter: </b>{{$question->letter}}</div>
@@ -261,7 +269,7 @@
                         {{$answer->answer}}
                     @endforeach
                 </div>
-                @elseif($fm->answer_table_name == 'fmt_unjumble_words_ans')
+                @elseif($fm->answer_table_name == 'fmt_unjumble_words_ans' || $fm->answer_table_name == 'fmt_mtw_ans')
                 <div style="color:rgb(0, 149, 182);">
                     <b>Answer: </b>
                     @foreach ($answers as $answer){{$answer->answer}}@endforeach
@@ -476,6 +484,9 @@
             @elseif($fm->question_table_name == 'fmt_mawra_ques')
                 <a class="fmt_fpm_edit" href="javascript:void(0);" onclick="modalMAWRA({{$que->question_id}})">Edit</a>
                 {{-- <a class="fmt_fpm_delete" href="{{route('fmt.cma.inactive', $que->question_id)}}">Delete</a> --}}
+            @elseif($fm->question_table_name == 'fmt_mtw_ques')
+                <a class="fmt_fpm_edit" href="javascript:void(0);" onclick="modalMAWRA({{$que->question_id}})">Edit</a>
+                {{-- <a class="fmt_fpm_delete" href="{{route('fmt.cma.inactive', $que->question_id)}}">Delete</a> --}}
             @endif
             
             @if($que->active == 1)
@@ -562,6 +573,8 @@
             <x-mcqt.edit :message="$que->question_id"/>
         @elseif($fm->question_table_name === 'fmt_mawra_ques')
             <x-mawra.edit :message="$que->question_id"/>
+        @elseif($fm->question_table_name === 'fmt_mtw_ques')
+            <x-mtw.edit :message="$que->question_id"/>
         @endif
         
     @endforeach
