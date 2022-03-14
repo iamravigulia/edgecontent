@@ -294,6 +294,13 @@
                 <x-gridtnf.open :pbs72="$problemset->id" :fmt72="$formatGot->id" />
             </div>
             @endif
+        @elseif ($key->tb_name == 'fmt_mtw_ques')
+        @php $formatGot = DB::table('format_types')->where('question_table_name', 'fmt_mtw_ques')->first(); @endphp
+            @if ($formatGot)
+            <div id="fmt_mtw_ques" hidden>
+                <x-mtw.open :pbs72="$problemset->id" :fmt72="$formatGot->id" />
+            </div>
+            @endif
         @elseif ($key->tb_name == 'fmt_mc4pq_ques')
         @php $formatGot = DB::table('format_types')->where('question_table_name', 'fmt_mc4pq_ques')->first(); @endphp
             @if ($formatGot)
