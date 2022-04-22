@@ -29,3 +29,4 @@ Route::POST('fmt/edgecontent/getSelectedChapters', 'EdgeWizz\Edgecontent\Control
 
 Route::POST('fmt/edgecontent/getSelectedChapterss_without_topic', 'EdgeWizz\Edgecontent\Controllers\ProblemSetController@getSelectedChapterss_without_topic')->name('fmt.edgecontent.select.getSelectedChapterss_without_topic');
 
+Route::get('fmt/edgecontent/removeoption/{que_id}/{option_id}', 'EdgeWizz\Edgecontent\Controllers\ProblemSetController@removeoption')->name('fmt.edgecontent.removeoption');

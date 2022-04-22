@@ -52,6 +52,12 @@
     #fmt_problem_set2_index_wrapper{
         display: block;
     }
+    .removeOption{
+        display:inline-block; border-radius:15px; height:20px; padding:0 4px; color:#fff; background:#000;
+    }
+    .removeOption:hover{
+        color:#fff; background:red;
+    }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
@@ -59,8 +65,9 @@
 <button id="btnSelectedRows" style="background:rgb(0, 149, 182); color:rgb(242, 242, 242); border-radius:4px; padding: 2px 8px; margin: 4px 0;">
     Move Multiple
 </button>
-
-
+@if (isset($success) && $success)
+    {{$success}}
+@endif
 <table class="cell-border" id="fmt_problem_set2_index" style="width:100%">
 <thead>
     <th></th>
@@ -160,14 +167,6 @@
                     {{$aq}}
                     @endif
                 @endforeach
-                @elseif($fm->question_table_name == 'fmt_mtw_ques')
-                    <div class="block"><b>Question:</b> {{$question->question ?? $question->format_title ?? 'n/a'}}</div>
-                    <div class="block"><b>Word1:</b> {{$question->word1 ?? 'n/a'}}</div>
-                    <div class="block"><b>word2:</b> {{$question->word2 ?? 'n/a'}}</div>
-                    <div class="block"><b>word3:</b> {{$question->word3 ?? 'n/a'}}</div>
-                    <div class="block"><b>word4:</b> {{$question->word4 ?? 'n/a'}}</div>
-                    <div class="block"><b>word5:</b> {{$question->word5 ?? 'n/a'}}</div>
-                    <div class="block"><b>word6:</b> {{$question->word6 ?? 'n/a'}}</div>
                 @elseif($fm->question_table_name == 'fmt_ltl_ques')
                 @php $baseUrl    = app('url')->asset('storage/'); @endphp
                     <div><b>Letter: </b>{{$question->letter}}</div>
@@ -257,36 +256,43 @@
             </div>
         </td>
         <td>
-            @if($fm->answer_table_name == 'fmt_unjumble_words_ans' || $fm->answer_table_name == 'fmt_mof_ans' || $fm->answer_table_name == 'fmt_mawr_ans' || $fm->answer_table_name == 'fmt_lamas_ans' || $fm->answer_table_name == 'fmt_lamaw_ans' || $fm->answer_table_name == 'fmt_mtw_ans')
+            @if($fm->answer_table_name == 'fmt_unjumble_words_ans' || $fm->answer_table_name == 'fmt_mof_ans' || $fm->answer_table_name == 'fmt_mawr_ans' || $fm->answer_table_name == 'fmt_lamas_ans' || $fm->answer_table_name == 'fmt_lamaw_ans')
                 @php $answers = DB::table($fm->answer_table_name)->where('question_id', $que->question_id)->orderBy('arrange')->get(); @endphp
                 @foreach ($answers as $answer)
-                    <li>{{$answer->answer ?? 'n/a'}}</li>
+                    <li>{{$answer->answer ?? 'n/a'}} <a href="{{route('fmt.edgecontent.removeoption', 
+                        ['que_id'=>$que->id,'option_id'=>$answer->id])}}" class="removeOption" title="Delete this option">x</a></li>
                 @endforeach
                 @if($fm->answer_table_name == 'fmt_mof_ans')
                 <div style="color:blue;">
                     <b>Answer: </b>
                     @foreach ($answers as $answer)
-                        {{$answer->answer}}
+                        {{$answer->answer}} <a href="{{route('fmt.edgecontent.removeoption', 
+                        ['que_id'=>$que->id,'option_id'=>$answer->id])}}" class="removeOption" title="Delete this option">x</a>
                     @endforeach
                 </div>
                 @elseif($fm->answer_table_name == 'fmt_unjumble_words_ans')
                 <div style="color:rgb(0, 149, 182);">
                     <b>Answer: </b>
-                    @foreach ($answers as $answer){{$answer->answer}}@endforeach
+                    @foreach ($answers as $answer){{$answer->answer}} <a href="{{route('fmt.edgecontent.removeoption', 
+                    ['que_id'=>$que->id,'option_id'=>$answer->id])}}" class="removeOption" title="Delete this option">x</a>@endforeach
                 </div>
                 @endif
             @elseif($fm->answer_table_name == 'fmt_mcq_ans' || $fm->answer_table_name == 'fmt_fillmcq_ans' || $fm->answer_table_name == 'fmt_mcqt_ans' || $fm->answer_table_name == 'fmt_mcqpc_ans' || $fm->answer_table_name == 'fmt_fillup_ans' || $fm->answer_table_name == 'fmt_mcqp_ans' || $fm->answer_table_name == 'fmt_mcaq_ans' || $fm->answer_table_name == 'fmt_mc2pq_ans' || $fm->answer_table_name == 'fmt_mc4pq_ans' || $fm->answer_table_name == 'fmt_tnf_ans' || $fm->answer_table_name == 'fmt_dad_ans' || $fm->answer_table_name == 'fmt_cma_ans' || $fm->answer_table_name == 'fmt_gridtnf_ans')
                 @php $answers = DB::table($fm->answer_table_name)->where('question_id', $que->question_id)->get(); @endphp
                 @foreach ($answers as $answer)
-                    <li @if($answer->arrange == 1) style="color:blue;" @endif >{{$answer->answer ?? 'n/a'}}</li>
+                    <li @if($answer->arrange == 1) style="color:blue;" @endif >{{$answer->answer ?? 'n/a'}} <a href="{{route('fmt.edgecontent.removeoption', 
+                    ['que_id'=>$que->id,'option_id'=>$answer->id])}}" class="removeOption" title="Delete this option">x</a></li>
                 @endforeach 
             @elseif($fm->question_table_name == 'fmt_lartrm_ques')
                 @php $answer = DB::table($fm->answer_table_name)->where('question_id', $que->question_id)->first(); @endphp                
-                <li style="color:blue;">{{$answer->answer ?? 'n/a'}}</li>
+                <li style="color:blue;">{{$answer->answer ?? 'n/a'}} <a href="{{route('fmt.edgecontent.removeoption', 
+                    ['que_id'=>$que->id,'option_id'=>$answer->id])}}" class="removeOption" title="Delete this option">x</a></li>
             @elseif($fm->question_table_name == 'fmt_map_ques')
-                <li style="color:blue;">{{$question->error ?? 'n/a'}}</li>
+                <li style="color:blue;">{{$question->error ?? 'n/a'}} <a href="{{route('fmt.edgecontent.removeoption', 
+                    ['que_id'=>$que->id,'option_id'=>$answer->id])}}" class="removeOption" title="Delete this option">x</a></li>
             @elseif($fm->question_table_name == 'fmt_rew_ques')
-                <li style="color:blue;">{{$question->correct ?? 'n/a'}}</li>
+                <li style="color:blue;">{{$question->correct ?? 'n/a'}} <a href="{{route('fmt.edgecontent.removeoption', 
+                    ['que_id'=>$que->id,'option_id'=>$answer->id])}}" class="removeOption" title="Delete this option">x</a></li>
             @elseif($fm->answer_table_name == 'fmt_matchthepairs_ans')
                 @php $fmt_mtp_ans = DB::table($fm->answer_table_name)->where('question_id', $que->question_id)->get() @endphp
                 <table style="width: 100%;">
@@ -300,6 +306,7 @@
                             <td>{{$ans->answer}}</td>
                         </tr>
                     @endif
+
                     @endforeach
                 </table>
             @elseif($fm->answer_table_name == 'fmt_mtpp_pic')
@@ -329,6 +336,8 @@
                             <img src="{{url('/')}}/storage/{{$image->url}}" style="width:40px; height:30px; margin-left:10px; object-fit:cover;"></li>
                             @endif
                         </div>
+                        <a href="{{route('fmt.edgecontent.removeoption', 
+                        ['que_id'=>$que->id,'option_id'=>$answer->id])}}" class="removeOption" title="Delete this option">x</a>
                     </li>
                 @endforeach 
             @elseif($fm->answer_table_name == 'fmt_mcqa_ans')
@@ -347,6 +356,8 @@
                             <small>Spanish Audio</small>
                             <audio controls="controls" src="{{url('/')}}/storage/{{$audio_es->url}}"></audio>
                             @endif
+                            <a href="{{route('fmt.edgecontent.removeoption', 
+                            ['que_id'=>$que->id,'option_id'=>$answer->id])}}" class="removeOption" title="Delete this option">x</a>
                         </div>
                     </li>
                 @endforeach 
@@ -361,6 +372,8 @@
                             <img style="width:20px; width:20px;" src="{{url('/')}}/storage/{{$img->url}}" alt="">
                             @endif
                         </div>
+                        <a href="{{route('fmt.edgecontent.removeoption', 
+                        ['que_id'=>$que->id,'option_id'=>$answer->id])}}" class="removeOption" title="Delete this option">x</a>
                     </li>
                 @endforeach 
             @endif
@@ -484,9 +497,6 @@
             @elseif($fm->question_table_name == 'fmt_mawra_ques')
                 <a class="fmt_fpm_edit" href="javascript:void(0);" onclick="modalMAWRA({{$que->question_id}})">Edit</a>
                 {{-- <a class="fmt_fpm_delete" href="{{route('fmt.cma.inactive', $que->question_id)}}">Delete</a> --}}
-            @elseif($fm->question_table_name == 'fmt_mtw_ques')
-                <a class="fmt_fpm_edit" href="javascript:void(0);" onclick="modalMAWRA({{$que->question_id}})">Edit</a>
-                {{-- <a class="fmt_fpm_delete" href="{{route('fmt.cma.inactive', $que->question_id)}}">Delete</a> --}}
             @endif
             
             @if($que->active == 1)
@@ -573,8 +583,6 @@
             <x-mcqt.edit :message="$que->question_id"/>
         @elseif($fm->question_table_name === 'fmt_mawra_ques')
             <x-mawra.edit :message="$que->question_id"/>
-        @elseif($fm->question_table_name === 'fmt_mtw_ques')
-            <x-mtw.edit :message="$que->question_id"/>
         @endif
         
     @endforeach

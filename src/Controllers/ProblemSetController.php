@@ -8,7 +8,9 @@ use Edgewizz\Edgecontent\Models\ProblemSetFormat;
 use Edgewizz\Edgecontent\Models\ProblemSetQues;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Session;
 use PhpParser\Node\Expr\FuncCall;
 
 class ProblemSetController extends Controller
@@ -191,5 +193,16 @@ class ProblemSetController extends Controller
             ->select('edw_chapter.chapt_name', 'problem_sets.id')
             ->get()->toJson();
         return $other_problem_sets;
+    }
+
+    public function removeoption($que_id, $option_id){
+        
+        $problem_set_questions = DB::table('problem_set_questions')->where('id', $que_id)->first();
+        $queTable = DB::table('format_types')->where('id', $problem_set_questions->format_type_id)->first();
+        $option = DB::table($queTable->answer_table_name)->where('id', $option_id)->delete();
+        // return Redirect::back()->withErrors(['password' => ['Invalid Username or Password']]);
+        // Session::flash('message', "Special message goes here");
+        return redirect()->back()->with('success', 'your message,here');   
+        return back()->withErrors('success', 'Option Removed');
     }
 }

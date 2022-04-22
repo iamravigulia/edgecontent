@@ -294,21 +294,13 @@
                 <x-gridtnf.open :pbs72="$problemset->id" :fmt72="$formatGot->id" />
             </div>
             @endif
-        @elseif ($key->tb_name == 'fmt_mtw_ques')
-        @php $formatGot = DB::table('format_types')->where('question_table_name', 'fmt_mtw_ques')->first(); @endphp
-            @if ($formatGot)
-            <div id="fmt_mtw_ques" hidden>
-                <x-mtw.open :pbs72="$problemset->id" :fmt72="$formatGot->id" />
-            </div>
-            @endif
-        @elseif ($key->tb_name == 'fmt_mc4pq_ques')
         @php $formatGot = DB::table('format_types')->where('question_table_name', 'fmt_mc4pq_ques')->first(); @endphp
             @if ($formatGot)
             <div id="fmt_mc4pq_ques" hidden>
                 <x-mc4pq.open :pbs72="$problemset->id" :fmt72="$formatGot->id" />
             </div>
             @endif
-        @endif
+        @endif        
         @endforeach
     </div>
     {{-- <button class="my-2 py-1 px-2 bg-blue-600 text-white rounded-lg" type="submit">Submit</button> --}}
@@ -325,7 +317,7 @@
             'fmt_lasa_ques', 'fmt_rtrm_ques', 'fmt_lartrm_ques', 'fmt_map_ques', 'fmt_mcq_ques', 'fmt_mcqp_ques', 'fmt_mcaq_ques', 'fmt_mc2pq_ques', 'fmt_mcqa_ques',
             'fmt_mcqpa_ques', 'fmt_mcqpa2_ques', 'fmt_mcqa_ques', 'fmt_mcqpan_ques', 'fmt_tnf_ques',
             'fmt_mcqpc_ques', 'fmt_mcqanpt_ques', 'fmt_cma_ques', 'fmt_dad_ques', 'fmt_rew_ques', 'fmt_marew_ques',
-            'fmt_fillupmulti_ques', 'fmt_unjumble_words_ques', 'fmt_ltl_ques', 'fmt_ltw_ques', 'fmt_mawr_ques', 'fmt_mcqt_ques', 'fmt_mawra_ques', 'fmt_gridtnf_ques', 'fmt_fillmcq_ques', 'fmt_mc4pq_ques', 'fmt_mtw_ques'
+            'fmt_fillupmulti_ques', 'fmt_unjumble_words_ques', 'fmt_ltl_ques', 'fmt_ltw_ques', 'fmt_mawr_ques', 'fmt_mcqt_ques', 'fmt_mawra_ques', 'fmt_gridtnf_ques', 'fmt_fillmcq_ques', 'fmt_mc4pq_ques'
         ];
         for (var i = 0; i < allFormats.length; i++) {
             if (formatSelect.value == allFormats[i]) {
